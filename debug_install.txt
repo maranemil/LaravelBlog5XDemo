@@ -1,0 +1,179 @@
+
+--------
+
+composer create-project --prefer-dist laravel/laravel blog "5.8.*"
+cd blog
+php artisan serve
+php artisan config:cache
+php artisan route:cache
+
+ERR: Class 'App\Http\Controllers\Controller' not found
+php artisan route:list -v
+
+ERR: CSQLSTATE[HY000] [2002] Connection refused (SQL: select * from `users`)
+sudo service mysql start
+sudo service apache2 start
+http://localhost/wwweb/phpMyAdmin/index.php
+
+mysql -uroot -p
+create database forge; use forge;
+
+ERR: "SQLSTATE[HY000] [1698] Access denied for user 'root'@'localhost' (SQL: select * from `users`)"
+sudo service mysql restart
+sudo service apache2 restart
+
+php artisan migrate -v
+PDOException::("SQLSTATE[HY000] [1698] Access denied for user 'root'@'localhost'")
+PDO::__construct("mysql:host=127.0.0.1;port=3306;dbname=laravel", "root", "", [])
+
+php artisan make:migration create_users_table
+php artisan make:migration create_password_resets_table
+
+change dbname pass in my.env
+php artisan config:cache
+
+"SQLSTATE[42S02]: Base table or view not found: 1146 Table 'forge.users' doesn't exist (SQL: select * from `users`)"
+
+
+php artisan make:migration create_users_table
+php artisan make:migration create_password_resets_table
+In your migration create_users_table
+
+public function up()
+    {
+        Schema::create('users', function (Blueprint $table) {
+            $table->increments('id');
+            $table->string('name');
+            $table->string('email')->unique();
+            $table->timestamp('email_verified_at')->nullable();
+            $table->string('password');
+            $table->rememberToken();
+            $table->timestamps();
+        });
+    }
+In your migration create_password_resets_table
+
+ public function up()
+    {
+        Schema::create('password_resets', function (Blueprint $table) {
+            $table->string('email')->index();
+            $table->string('token');
+            $table->timestamp('created_at')->nullable();
+        });
+    }
+
+#php artisan make:auth
+php artisan migrate:refresh
+php artisan migrate
+
+
+ERR:"View [users.index] not found."
+
+#php artisan config:cache, php artisan cache:clear, php artisan route:cache
+
+https://laravel.com/docs/5.0/views
+https://laravel.com/docs/5.1/views
+https://laravel.com/docs/4.2/responses
+https://laravel.com/docs/5.8/authentication
+https://laracasts.com/discuss/channels/general-discussion/laravel-5-eager-loading-userscontroller-view-all-users-with-their-roles-and-permissions?page=1
+https://www.cloudways.com/blog/models-views-laravel/
+https://laravel.com/docs/5.2/authorization
+https://laravel.com/docs/master/views#passing-data-to-views
+https://laravel.com/docs/5.8/routing
+
+mysql> CREATE USER ‘newroot’@’localhost’ IDENTIFIED BY ‘some_password’;
+mysql> GRANT ALL PRIVILEGES ON *.* TO ‘newroot’@’localhost’ WITH GRANT OPTION;
+mysql> FLUSH PRIVILEGES;
+
+
+
+..............
+https://medium.com/@brice_hartmann/building-a-user-based-task-list-application-in-laravel-eff4a07e2688
+
+composer create-project --prefer-dist laravel/laravel task-app
+laravel new task-app
+
+
+
+
+Modify our routes/web.php file adding the statementAuth::routes();
+Create a HomeController at app/Http/Controllers/HomeController.php
+Create an application layout (blade template) at resources/views/layouts/app.blade.php
+Create a home view (blade template) at resources/views/home.blade.php
+Create authentication views (blade templates) for logging in, resetting passwords, and registering in resources/views/auth/
+
+create some test users 
+php artisan make:seeder UsersTableSeeder
+
+<?php
+use App\Models\User;
+use Illuminate\Database\Seeder;
+class UsersTableSeeder extends Seeder
+{
+    /**
+     * Run the database seeds.
+     *
+     * @return void
+     */
+    public function run()
+    {
+        // create a test user
+        factory(User::class)->create([
+            'name' => 'Test User',
+            'email' => 'user@example.com'
+        ]);
+        
+        // create 50 random test users
+        factory(User::class, 50)->create();
+    }
+}
+
+resources/views/layouts/app.blade.php
+resources/views/home.blade.php
+resources/views/tasks.blade.php
+@extends('layouts.app')
+@section('content')
+@foreach ($tasks as $task)
+	@if ($task->is_complete)
+		{{ $task->title }}
+	@endif
+@endforeach	
+
+
+resources/views/layouts/app.blade.php
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- CSRF Token -->
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+
+    <title>{{ config('app.name', 'Laravel') }}</title>
+
+    <!-- Scripts -->
+    <script src="{{ asset('js/app.js') }}" defer></script>
+
+    <!-- Fonts -->
+    <link rel="dns-prefetch" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet" type="text/css">
+
+    <!-- Styles -->
+    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <style>
+        .card-new-task {
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+
+
+
+
+
+
+
+
+
+
+https://framework.zend.com/downloads
