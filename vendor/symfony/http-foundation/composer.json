@@ -1,5 +1,5 @@
 {
-    "name": "symfony/http-foundation",
+    "name": "symfony/http-foundation": "4.4.7",
     "type": "library",
     "description": "Symfony HttpFoundation Component",
     "keywords": [],
